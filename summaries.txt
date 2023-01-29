@@ -1,0 +1,55 @@
+공부할만한 곳
+  - 이론 설명, 문제도 제공: https://learnbyexample.github.io/py_regular_expressions/cover.html
+  - 시각적으로 표현식 점검 가능: https://www.debuggex.com/#cheatsheet
+
+re
+re.compile
+bytes and str
+
+concepts: backreference, (non-)capture group, lookaround, anchor,
+methods: match, search, findall, finditer, sub, fullmatch, escape, split, subn, expand
+  - search(string, pos, endpos): string[pos, endpos) 대상으로 검색한다.
+  - sub(pattern, repl, string): repl에는 문자열 혹은 문자열을 반환하는 함수가 올 수 있다.
+  - findall: capture group을 패턴 내에 사용했을 때 달라지는 출력 결과에 주의.
+  - groupdict: 키는 named capture group명, 값은 그룹이 추출한 문자열의 dict
+objects: re.Match
+  - properties
+    - m.pos, m.endpos: m.string의 어느 부분을 검색 대상으로 삼았는지
+    - m.string: 검색 대상 텍스트
+    - m.re: 무슨 패턴이었는지
+    - m[n]: n-th group(0는 모든 매칭을 단일 문자열로 출력)
+    - m.group(n): n-th group
+    - m.groups(): tuple of all groups
+    - m.span(): (m.start, m.end)
+    - m.{start,end}:
+  - methods
+    - expand
+
+flags(== modifiers): re.IGNORECASE, re.DOTALL, re.MULTILINE, re.VERBOSE
+
+metacharacters <-> const characters
+- escaped characters: \d, \D, \w, \W, \s, \S, \b, \B, \Q, \E(not supported in Python), \t, \x<N>, \0<N>
+- quantifiers: *, +, ?, {n}, {n, m}, {n,}, {,m}, <any_quantifier>? (lazy quant),
+- all but whitespace: .
+- assertion: ^, $, \b, \B, \A, \Z
+- charset(== charset): [0-9], [^0-9]
+    - negating: [^abc]
+    - escaping: []abc[] or [\[\]abc] [\\abc], ...
+      - \w == [a-zA-Z0-9_]
+      - \W == [^a-zA-Z0-9_]
+      - \d == [0-9]
+      - \D == [^0-9]
+      - \s == [ \t\n\r\f\v]
+      - \S == [^ \t\n\r\f\v]
+- alternation: a|b
+  - make it greedy as expected technique: '|'.join(sorted(alts, key=len, reverse=True))
+  - a AND b technique: (a.*b|b.*a)
+- group: (), \1, (?P<group>), (?P=group), (?i), (?:)
+  - \N: 단순 그룹 역참조
+  - \g<N>: 그룹 번호 뒤로 숫자를 쓸 수 있게 된다.
+  - (?:): 비 capture group 생성.
+  - (?P<group>): referencing
+  - \g<group>: replacement
+  - (?P=group): back-referencing
+  - (?(id/name)yes-pattern|no-pattern): conditional groups
+- lookaround: (?<!), (?!), (?=), (?<=)
